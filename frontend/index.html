@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Transaction Pipeline — Intelligent Financial Data Processing</title>
+    <meta name="description" content="Process financial CSV data through an AI-powered pipeline with anomaly detection, LLM classification, and narrative summary generation.">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ═══ Navbar ═══ -->
+        <nav class="navbar" id="navbar">
+            <div class="navbar-brand">
+                <div class="navbar-logo">⚡</div>
+                <div>
+                    <div class="navbar-title">Transaction Pipeline</div>
+                    <div class="navbar-subtitle">AI-Powered Analysis</div>
+                </div>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-primary" id="uploadBtn" onclick="app.showUploadModal()">
+                    <span>＋</span> Upload CSV
+                </button>
+            </div>
+        </nav>
+
+        <!-- ═══ Main Content ═══ -->
+        <main class="main-content" id="mainContent">
+            <!-- Dashboard View (default) -->
+            <div id="dashboardView">
+                <div class="page-header fade-in-up">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-description">Upload financial transaction data and let AI clean, classify, and analyze it for anomalies.</p>
+                </div>
+
+                <!-- Upload Zone -->
+                <div class="upload-zone fade-in-up stagger-1" id="uploadZone">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-title">Drop your CSV file here</div>
+                    <div class="upload-subtitle">or click to browse • Supports .csv files</div>
+                    <input type="file" class="upload-input" id="fileInput" accept=".csv">
+
+                    <div class="progress-container" id="uploadProgress">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="progressLabel">Uploading...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jobs Section -->
+                <div class="fade-in-up stagger-2" style="margin-top: var(--space-10);">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Recent Jobs</h2>
+                            <p class="section-subtitle" id="jobCount">Loading...</p>
+                        </div>
+                        <div class="table-filters" id="statusFilters">
+                            <button class="filter-btn active" data-status="all" onclick="app.filterJobs('all')">All</button>
+                            <button class="filter-btn" data-status="completed" onclick="app.filterJobs('completed')">Completed</button>
+                            <button class="filter-btn" data-status="processing" onclick="app.filterJobs('processing')">Processing</button>
+                            <button class="filter-btn" data-status="failed" onclick="app.filterJobs('failed')">Failed</button>
+                        </div>
+                    </div>
+
+                    <div class="jobs-list" id="jobsList">
+                        <!-- Jobs populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processing View -->
+            <div id="processingView" style="display: none;">
+                <button class="back-btn" onclick="app.showDashboard()">← Back to Dashboard</button>
+                <div class="processing-view">
+                    <div class="processing-spinner"></div>
+                    <h2 class="processing-title">Processing your data</h2>
+                    <p class="processing-subtitle" id="processingFilename">transactions.csv</p>
+                    <div class="processing-steps">
+                        <div class="processing-step" id="step-upload">
+                            <div class="step-indicator">1</div>
+                            <span>Uploading & validating CSV</span>
+                        </div>
+                        <div class="processing-step" id="step-clean">
+                            <div class="step-indicator">2</div>
+                            <span>Cleaning & normalizing data</span>
+                        </div>
+                        <div class="processing-step" id="step-anomaly">
+                            <div class="step-indicator">3</div>
+                            <span>Detecting anomalies</span>
+                        </div>
+                        <div class="processing-step" id="step-classify">
+                            <div class="step-indicator">4</div>
+                            <span>AI classification</span>
+                        </div>
+                        <div class="processing-step" id="step-summary">
+                            <div class="step-indicator">5</div>
+                            <span>Generating summary report</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results View -->
+            <div id="resultsView" style="display: none;">
+                <button class="back-btn" onclick="app.showDashboard()">← Back to Dashboard</button>
+
+                <!-- Summary Stats -->
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- AI Narrative -->
+                <div class="narrative-card" id="narrativeCard" style="display: none;">
+                    <div class="narrative-label">✦ AI Analysis</div>
+                    <p class="narrative-text" id="narrativeText"></p>
+                    <div id="riskBadge"></div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-grid" id="chartsGrid">
+                    <!-- Category Breakdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Spending by Category</h3>
+                        </div>
+                        <div class="donut-chart-container" id="categoryChart">
+                            <!-- SVG donut chart -->
+                        </div>
+                    </div>
+
+                    <!-- Top Merchants -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Merchants</h3>
+                        </div>
+                        <div class="bar-chart" id="merchantChart">
+                            <!-- Bar chart items -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Table -->
+                <div class="table-container" id="transactionsTable">
+                    <div class="table-toolbar">
+                        <div class="table-search">
+                            <span style="color: var(--text-tertiary);">🔍</span>
+                            <input type="text" placeholder="Search transactions..." id="searchInput" oninput="app.searchTransactions(this.value)">
+                        </div>
+                        <div class="table-filters">
+                            <button class="filter-btn active" data-filter="all" onclick="app.filterTransactions('all')">All</button>
+                            <button class="filter-btn" data-filter="anomalies" onclick="app.filterTransactions('anomalies')">⚠ Anomalies</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th onclick="app.sortTable('txn_id')">Txn ID</th>
+                                    <th onclick="app.sortTable('date')">Date</th>
+                                    <th onclick="app.sortTable('merchant')">Merchant</th>
+                                    <th onclick="app.sortTable('amount')">Amount</th>
+                                    <th onclick="app.sortTable('currency')">Currency</th>
+                                    <th onclick="app.sortTable('status')">Status</th>
+                                    <th onclick="app.sortTable('category')">Category</th>
+                                    <th>Flags</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-pagination" id="pagination">
+                        <span id="paginationInfo">Showing 0 of 0</span>
+                        <div class="pagination-btns" id="paginationBtns"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
