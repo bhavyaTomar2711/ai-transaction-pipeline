@@ -1,5 +1,5 @@
 """
-LLM Summarizer — generates a narrative summary of processed transactions.
+LLM Summarizer — generates a narrative summary of processed transactions using Groq.
 
 Produces:
 - Total spend by currency (INR, USD)
@@ -155,18 +155,22 @@ def generate_summary(transactions: List[Dict]) -> Dict:
     narrative = None
     risk_level = stats["risk_level"]
 
-    if settings.GEMINI_API_KEY:
+    if settings.GROQ_API_KEY:
         try:
-            import google.generativeai as genai
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            from groq import Groq
+            client = Groq(api_key=settings.GROQ_API_KEY)
 
             prompt = _build_summary_prompt(stats, transactions)
 
             for attempt in range(settings.LLM_MAX_RETRIES):
                 try:
-                    response = model.generate_content(prompt)
-                    raw_text = response.text
+                    response = client.chat.completions.create(
+                        model="mixtral-8x7b-32768",
+                        messages=[{"role": "user", "content": prompt}],
+                        temperature=0.3,
+                        max_tokens=1024
+                    )
+                    raw_text = response.choices[0].message.content
 
                     # Parse JSON from response
                     json_match = re.search(r'\{.*\}', raw_text, re.DOTALL)

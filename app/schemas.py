@@ -100,3 +100,5 @@ class JobResultsResponse(BaseModel):
     anomalies: List[TransactionResponse] = []
     total_transactions: int = 0
     total_anomalies: int = 0
+    total_transactions: int = 0
+    total_anomalies: int = 0

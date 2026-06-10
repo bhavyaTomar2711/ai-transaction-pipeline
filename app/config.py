@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "postgresql://postgres:postgres@postgres:5432/transactions_db"
     REDIS_URL: str = "redis://redis:6379/0"
-    GEMINI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
 
     UPLOAD_DIR: str = "uploads"
 

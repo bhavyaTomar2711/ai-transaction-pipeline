@@ -1,5 +1,5 @@
 """
-LLM Classifier — uses Gemini 1.5 Flash to classify uncategorized transactions.
+LLM Classifier — uses Groq API to classify uncategorized transactions.
 
 Features:
 - Batch processing (10 transactions per call)
@@ -104,18 +104,17 @@ def classify_transactions(transactions: List[Dict]) -> List[Dict]:
 
     logger.info(f"{len(needs_classification)} transactions need classification")
 
-    # Check if Gemini API key is available
-    if not settings.GEMINI_API_KEY:
-        logger.info("No Gemini API key — using rule-based fallback classification")
+    # Check if Groq API key is available
+    if not settings.GROQ_API_KEY:
+        logger.info("No Groq API key — using rule-based fallback classification")
         return _classify_with_rules(transactions)
 
-    # Use Gemini for classification
+    # Use Groq for classification
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        from groq import Groq
+        client = Groq(api_key=settings.GROQ_API_KEY)
     except Exception as e:
-        logger.error(f"Failed to initialize Gemini: {e}")
+        logger.error(f"Failed to initialize Groq: {e}")
         return _classify_with_rules(transactions)
 
     batch_size = settings.LLM_BATCH_SIZE
@@ -131,8 +130,13 @@ def classify_transactions(transactions: List[Dict]) -> List[Dict]:
 
         for attempt in range(settings.LLM_MAX_RETRIES):
             try:
-                response = model.generate_content(prompt)
-                raw_response = response.text
+                response = client.chat.completions.create(
+                    model="mixtral-8x7b-32768",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.3,
+                    max_tokens=1024
+                )
+                raw_response = response.choices[0].message.content
                 parsed = _parse_llm_response(raw_response, len(batch_txns))
 
                 if parsed:

@@ -1422,6 +1422,23 @@ input, textarea, select {
 .stagger-4 { animation-delay: 0.2s; animation-fill-mode: both; }
 .stagger-5 { animation-delay: 0.25s; animation-fill-mode: both; }
 
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutDown {
+  to {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
 
 /* ─── Responsive ───────────────────────────────────────────── */
 @media (max-width: 1024px) {
