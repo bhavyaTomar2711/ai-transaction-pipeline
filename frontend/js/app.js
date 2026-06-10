@@ -28,8 +28,8 @@ class TransactionApp {
 
     uploadZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      uploadZone.style.backgroundColor = 'rgba(10, 132, 255, 0.1)';
-      uploadZone.style.borderColor = 'var(--accent-blue)';
+      uploadZone.style.backgroundColor = 'rgba(124, 92, 255, 0.06)';
+      uploadZone.style.borderColor = 'var(--accent-purple)';
     });
 
     uploadZone.addEventListener('dragleave', () => {
@@ -273,7 +273,7 @@ class TransactionApp {
     }
 
     const total = categories.reduce((sum, [_, value]) => sum + value, 0);
-    const colors = ['#0A84FF', '#30D158', '#FF9F0A', '#FF453A', '#BF5AF2', '#64D2FF'];
+    const colors = ['#7C5CFF', '#4AA8E0', '#1FAE5A', '#E8890C', '#E5484D', '#6A48F5'];
 
     let svg = '<svg viewBox="0 0 200 200" style="width: 100%; max-width: 200px; height: 200px;">';
     let currentAngle = -90;
@@ -340,8 +340,8 @@ class TransactionApp {
               <span style="font-size: var(--font-size-sm); color: var(--text-secondary);">${getName(merchant)}</span>
               <span style="font-size: var(--font-size-sm); color: var(--text-primary);">₹${total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
             </div>
-            <div style="background: rgba(10, 132, 255, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
-              <div style="background: var(--accent-blue); height: 100%; width: ${percentage}%; border-radius: 4px;"></div>
+            <div style="background: rgba(124, 92, 255, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
+              <div style="background: var(--accent-purple); height: 100%; width: ${percentage}%; border-radius: 4px;"></div>
             </div>
           </div>
         `;

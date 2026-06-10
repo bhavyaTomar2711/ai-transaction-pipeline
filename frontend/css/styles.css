@@ -8,51 +8,54 @@
 
 /* ─── CSS Custom Properties (Design Tokens) ────────────────── */
 :root {
-  /* Colors — Dark Mode */
-  --bg-primary: #000000;
-  --bg-secondary: #0A0A0A;
-  --bg-tertiary: #111111;
-  --bg-card: rgba(18, 18, 18, 0.8);
-  --bg-card-hover: rgba(28, 28, 28, 0.9);
-  --bg-glass: rgba(255, 255, 255, 0.04);
-  --bg-glass-hover: rgba(255, 255, 255, 0.08);
-  --bg-modal-overlay: rgba(0, 0, 0, 0.7);
+  /* Colors — Light Mode (Apple-inspired premium white) */
+  --bg-primary: #FBFBFD;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #FFFFFF;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: #FFFFFF;
+  --bg-glass: rgba(124, 92, 255, 0.04);
+  --bg-glass-hover: rgba(124, 92, 255, 0.08);
+  --bg-modal-overlay: rgba(20, 18, 33, 0.35);
 
   /* Borders */
-  --border-primary: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-focus: rgba(10, 132, 255, 0.5);
+  --border-primary: rgba(20, 18, 33, 0.08);
+  --border-subtle: rgba(20, 18, 33, 0.05);
+  --border-focus: rgba(124, 92, 255, 0.5);
 
   /* Text */
-  --text-primary: #F5F5F7;
-  --text-secondary: rgba(245, 245, 247, 0.6);
-  --text-tertiary: rgba(245, 245, 247, 0.4);
-  --text-inverse: #000000;
+  --text-primary: #1D1D1F;
+  --text-secondary: rgba(29, 29, 31, 0.62);
+  --text-tertiary: rgba(29, 29, 31, 0.42);
+  --text-inverse: #FFFFFF;
 
-  /* Accent Colors */
-  --accent-blue: #0A84FF;
-  --accent-blue-hover: #409CFF;
-  --accent-green: #30D158;
-  --accent-green-soft: rgba(48, 209, 88, 0.12);
-  --accent-orange: #FF9F0A;
-  --accent-orange-soft: rgba(255, 159, 10, 0.12);
-  --accent-red: #FF453A;
-  --accent-red-soft: rgba(255, 69, 58, 0.12);
-  --accent-purple: #BF5AF2;
-  --accent-purple-soft: rgba(191, 90, 242, 0.12);
-  --accent-yellow: #FFD60A;
-  --accent-teal: #64D2FF;
-  --accent-indigo: #5E5CE6;
+  /* Accent Colors — purple-forward */
+  --accent-blue: #7C5CFF;
+  --accent-blue-hover: #6A48F5;
+  --accent-green: #1FAE5A;
+  --accent-green-soft: rgba(31, 174, 90, 0.12);
+  --accent-orange: #E8890C;
+  --accent-orange-soft: rgba(232, 137, 12, 0.12);
+  --accent-red: #E5484D;
+  --accent-red-soft: rgba(229, 72, 77, 0.12);
+  --accent-purple: #7C5CFF;
+  --accent-purple-soft: rgba(124, 92, 255, 0.12);
+  --accent-yellow: #D9A40A;
+  --accent-teal: #4AA8E0;
+  --accent-indigo: #6A48F5;
+
+  /* Grid line color */
+  --grid-line: rgba(124, 92, 255, 0.06);
 
   /* Status Colors */
-  --status-pending: #FF9F0A;
-  --status-pending-bg: rgba(255, 159, 10, 0.10);
-  --status-processing: #0A84FF;
-  --status-processing-bg: rgba(10, 132, 255, 0.10);
-  --status-completed: #30D158;
-  --status-completed-bg: rgba(48, 209, 88, 0.10);
-  --status-failed: #FF453A;
-  --status-failed-bg: rgba(255, 69, 58, 0.10);
+  --status-pending: #E8890C;
+  --status-pending-bg: rgba(232, 137, 12, 0.10);
+  --status-processing: #7C5CFF;
+  --status-processing-bg: rgba(124, 92, 255, 0.10);
+  --status-completed: #1FAE5A;
+  --status-completed-bg: rgba(31, 174, 90, 0.10);
+  --status-failed: #E5484D;
+  --status-failed-bg: rgba(229, 72, 77, 0.10);
 
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
@@ -87,13 +90,13 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
-  --shadow-glow-blue: 0 0 30px rgba(10, 132, 255, 0.15);
-  --shadow-glow-green: 0 0 30px rgba(48, 209, 88, 0.15);
+  /* Shadows — soft, premium light-mode elevation */
+  --shadow-sm: 0 1px 2px rgba(20, 18, 33, 0.04);
+  --shadow-md: 0 4px 16px rgba(20, 18, 33, 0.06);
+  --shadow-lg: 0 12px 32px rgba(20, 18, 33, 0.08);
+  --shadow-xl: 0 24px 60px rgba(20, 18, 33, 0.12);
+  --shadow-glow-blue: 0 8px 24px rgba(124, 92, 255, 0.22);
+  --shadow-glow-green: 0 8px 24px rgba(31, 174, 90, 0.18);
 
   /* Transitions */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -128,11 +131,35 @@ html {
 
 body {
   font-family: var(--font-family);
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.5;
   overflow-x: hidden;
   min-height: 100vh;
+  position: relative;
+}
+
+/* Soft purple ambient glow over the grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px circle at 15% -10%, rgba(124, 92, 255, 0.10), transparent 60%),
+    radial-gradient(800px circle at 100% 0%, rgba(124, 92, 255, 0.06), transparent 55%);
+}
+
+.app-container,
+.toast-container {
+  position: relative;
+  z-index: 1;
 }
 
 a {
@@ -169,12 +196,12 @@ input, textarea, select {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(124, 92, 255, 0.25);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(124, 92, 255, 0.4);
 }
 
 
@@ -202,7 +229,7 @@ input, textarea, select {
   justify-content: space-between;
   padding: 0 var(--space-8);
   border-bottom: 1px solid var(--border-primary);
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.72);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   position: sticky;
@@ -220,11 +247,13 @@ input, textarea, select {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-md);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 .navbar-title {
@@ -286,7 +315,7 @@ input, textarea, select {
 
 .btn-secondary:hover {
   background: var(--bg-glass-hover);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(124, 92, 255, 0.2);
 }
 
 .btn-icon {
@@ -325,11 +354,13 @@ input, textarea, select {
   transition: all var(--duration-normal) var(--ease-out);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(124, 92, 255, 0.18);
   background: var(--bg-card-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .card-header {
@@ -372,6 +403,33 @@ input, textarea, select {
 .stat-card {
   position: relative;
   overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.stat-card:hover {
+  border-color: rgba(124, 92, 255, 0.18);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.stat-value {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
 }
 
 .stat-card::before {
@@ -380,8 +438,9 @@ input, textarea, select {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  opacity: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-teal));
+  opacity: 0.9;
   transition: opacity var(--duration-normal) var(--ease-out);
 }
 
@@ -473,7 +532,7 @@ input, textarea, select {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.15;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(120deg, #1D1D1F 0%, #4A3D9E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -518,6 +577,8 @@ input, textarea, select {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
 }
 
 .upload-zone::before {
@@ -526,7 +587,7 @@ input, textarea, select {
   inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(10, 132, 255, 0.03) 0%,
+    rgba(124, 92, 255, 0.06) 0%,
     transparent 70%
   );
   opacity: 0;
@@ -535,8 +596,9 @@ input, textarea, select {
 
 .upload-zone:hover,
 .upload-zone.drag-over {
-  border-color: var(--accent-blue);
-  background: rgba(10, 132, 255, 0.03);
+  border-color: var(--accent-purple);
+  background: rgba(124, 92, 255, 0.04);
+  box-shadow: var(--shadow-md);
 }
 
 .upload-zone:hover::before,
@@ -597,7 +659,7 @@ input, textarea, select {
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-indigo));
   border-radius: var(--radius-full);
   transition: width 0.6s var(--ease-out);
   position: relative;
@@ -649,13 +711,15 @@ input, textarea, select {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
   transition: all var(--duration-normal) var(--ease-out);
 }
 
 .job-item:hover {
-  border-color: var(--border-primary);
+  border-color: rgba(124, 92, 255, 0.18);
   background: var(--bg-card-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .job-info {
@@ -719,15 +783,16 @@ input, textarea, select {
 /* ─── Narrative Card ───────────────────────────────────────── */
 .narrative-card {
   background: linear-gradient(135deg, 
-    rgba(10, 132, 255, 0.06) 0%, 
-    rgba(191, 90, 242, 0.06) 100%
+    rgba(124, 92, 255, 0.07) 0%, 
+    rgba(74, 168, 224, 0.06) 100%
   );
-  border: 1px solid rgba(10, 132, 255, 0.15);
+  border: 1px solid rgba(124, 92, 255, 0.18);
   border-radius: var(--radius-xl);
   padding: var(--space-8);
   margin-bottom: var(--space-8);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .narrative-card::before {
@@ -739,7 +804,7 @@ input, textarea, select {
   height: 200%;
   background: radial-gradient(
     circle at 70% 30%,
-    rgba(10, 132, 255, 0.04) 0%,
+    rgba(124, 92, 255, 0.06) 0%,
     transparent 50%
   );
 }
@@ -798,7 +863,8 @@ input, textarea, select {
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--bg-card);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 .table-toolbar {
@@ -1105,7 +1171,7 @@ input, textarea, select {
   height: 100%;
   border-radius: var(--radius-full);
   transition: width 1s var(--ease-out);
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-teal));
 }
 
 
