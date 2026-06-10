@@ -165,7 +165,7 @@ def generate_summary(transactions: List[Dict]) -> Dict:
             for attempt in range(settings.LLM_MAX_RETRIES):
                 try:
                     response = client.chat.completions.create(
-                        model="mixtral-8x7b-32768",
+                        model="llama-3.1-8b-instant",
                         messages=[{"role": "user", "content": prompt}],
                         temperature=0.3,
                         max_tokens=1024

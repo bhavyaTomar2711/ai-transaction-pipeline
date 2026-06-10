@@ -42,7 +42,9 @@ def detect_anomalies(transactions: List[Dict]) -> List[Dict]:
     """
     # Normalize domestic merchant names for case-insensitive comparison
     domestic_merchants_lower = {m.lower() for m in settings.DOMESTIC_MERCHANTS}
-    multiplier = settings.ANOMALY_MULTIPLIER
+    # Use Decimal for the multiplier — Python cannot multiply float * Decimal,
+    # which would raise a TypeError and crash the whole pipeline.
+    multiplier = Decimal(str(settings.ANOMALY_MULTIPLIER))
 
     # Pre-compute account medians
     account_medians = compute_account_medians(transactions)

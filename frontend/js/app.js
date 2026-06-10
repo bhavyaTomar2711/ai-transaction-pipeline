@@ -72,12 +72,18 @@ class TransactionApp {
 
     // Show progress
     const progressContainer = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const progressPercent = document.getElementById('progressPercent');
     progressContainer.style.display = 'block';
+    if (progressLabel) progressLabel.textContent = 'Uploading...';
+    this.setProgress(progressBar, progressPercent, 10);
 
     const formData = new FormData();
     formData.append('file', file);
 
     try {
+      this.setProgress(progressBar, progressPercent, 40);
       const response = await fetch('/api/jobs/upload', {
         method: 'POST',
         body: formData,
@@ -90,14 +96,30 @@ class TransactionApp {
 
       const data = await response.json();
       this.currentJobId = data.job_id;
+      this.setProgress(progressBar, progressPercent, 100);
+      if (progressLabel) progressLabel.textContent = 'Uploaded';
 
       this.showToast(`File uploaded: ${file.name}`, 'success');
+
+      const filenameEl = document.getElementById('processingFilename');
+      if (filenameEl) filenameEl.textContent = file.name;
+
       this.showProcessingView();
       this.startStatusPolling();
+
+      // Reset the file input so the same file can be re-uploaded later
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) fileInput.value = '';
     } catch (error) {
       this.showToast(`Upload failed: ${error.message}`, 'error');
       progressContainer.style.display = 'none';
+      this.setProgress(progressBar, progressPercent, 0);
     }
+  }
+
+  setProgress(barEl, percentEl, value) {
+    if (barEl) barEl.style.width = `${value}%`;
+    if (percentEl) percentEl.textContent = `${value}%`;
   }
 
   startStatusPolling() {
@@ -222,12 +244,13 @@ class TransactionApp {
       document.getElementById('narrativeText').textContent = summary.narrative;
 
       const riskBadge = document.getElementById('riskBadge');
-      const riskColor = summary.risk_level === 'HIGH' ? 'var(--accent-red)' :
-                       summary.risk_level === 'MEDIUM' ? 'var(--accent-orange)' :
+      const risk = (summary.risk_level || '').toString().toLowerCase();
+      const riskColor = risk === 'high' ? 'var(--accent-red)' :
+                       risk === 'medium' ? 'var(--accent-orange)' :
                        'var(--accent-green)';
       riskBadge.innerHTML = `
         <span style="display: inline-block; padding: 4px 12px; background: ${riskColor}20; color: ${riskColor}; border-radius: 16px; font-size: var(--font-size-sm); margin-top: 12px;">
-          Risk Level: ${summary.risk_level}
+          Risk Level: ${risk ? risk.toUpperCase() : 'LOW'}
         </span>
       `;
     }
@@ -300,17 +323,22 @@ class TransactionApp {
       return;
     }
 
-    const maxAmount = Math.max(...topMerchants.map(m => m.amount));
+    // Backend returns merchants as { name, total }
+    const getName = (m) => m.name ?? m.merchant ?? 'Unknown';
+    const getTotal = (m) => Number(m.total ?? m.amount ?? 0);
+
+    const maxAmount = Math.max(...topMerchants.map(getTotal), 1);
 
     const html = topMerchants
       .slice(0, 5)
       .map((merchant) => {
-        const percentage = (merchant.amount / maxAmount) * 100;
+        const total = getTotal(merchant);
+        const percentage = (total / maxAmount) * 100;
         return `
           <div style="margin-bottom: 12px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-              <span style="font-size: var(--font-size-sm); color: var(--text-secondary);">${merchant.merchant}</span>
-              <span style="font-size: var(--font-size-sm); color: var(--text-primary);">₹${merchant.amount.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+              <span style="font-size: var(--font-size-sm); color: var(--text-secondary);">${getName(merchant)}</span>
+              <span style="font-size: var(--font-size-sm); color: var(--text-primary);">₹${total.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
             </div>
             <div style="background: rgba(10, 132, 255, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
               <div style="background: var(--accent-blue); height: 100%; width: ${percentage}%; border-radius: 4px;"></div>
@@ -415,10 +443,12 @@ class TransactionApp {
           txn.txn_id,
           txn.merchant,
           txn.category,
-          txn.amount.toString(),
+          txn.amount,
           txn.currency,
         ];
-        if (!searchableFields.some((field) => field.toLowerCase().includes(this.searchTerm))) {
+        if (!searchableFields.some((field) =>
+          field != null && field.toString().toLowerCase().includes(this.searchTerm)
+        )) {
           return false;
         }
       }
@@ -526,6 +556,15 @@ class TransactionApp {
     document.getElementById('processingView').style.display = 'none';
     document.getElementById('resultsView').style.display = 'none';
     this.loadJobs();
+  }
+
+  showUploadModal() {
+    // Navbar "Upload CSV" button — bring the user to the dashboard upload zone
+    this.showDashboard();
+    const fileInput = document.getElementById('fileInput');
+    const uploadZone = document.getElementById('uploadZone');
+    if (uploadZone) uploadZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (fileInput) fileInput.click();
   }
 
   showProcessingView() {
